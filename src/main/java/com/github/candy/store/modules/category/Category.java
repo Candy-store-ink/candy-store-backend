@@ -1,6 +1,6 @@
-package com.github.candy.store.module.category;
+package com.github.candy.store.modules.category;
 
-import com.github.candy.store.module.product.Product;
+import com.github.candy.store.modules.product.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

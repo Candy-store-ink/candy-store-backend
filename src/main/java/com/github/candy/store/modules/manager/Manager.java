@@ -1,4 +1,4 @@
-package com.github.candy.store.module.manager;
+package com.github.candy.store.modules.manager;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

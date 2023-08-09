@@ -1,7 +1,7 @@
-package com.github.candy.store.module.orderProducts;
+package com.github.candy.store.modules.orderProducts;
 
-import com.github.candy.store.module.product.Product;
-import com.github.candy.store.module.userOrder.UserOrder;
+import com.github.candy.store.modules.product.Product;
+import com.github.candy.store.modules.userOrder.UserOrder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

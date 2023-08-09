@@ -1,8 +1,8 @@
-package com.github.candy.store.module.user;
+package com.github.candy.store.modules.user;
 
-import com.github.candy.store.module.favoriteProducts.FavoriteProducts;
-import com.github.candy.store.module.manager.Manager;
-import com.github.candy.store.module.userOrder.UserOrder;
+import com.github.candy.store.modules.favoriteProducts.FavoriteProducts;
+import com.github.candy.store.modules.manager.Manager;
+import com.github.candy.store.modules.userOrder.UserOrder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -63,6 +63,19 @@ CREATE TABLE IF NOT EXISTS user
     CONSTRAINT pk_user PRIMARY KEY (id)
 );
 
+CREATE TABLE token
+(
+    id      BIGINT AUTO_INCREMENT NOT NULL,
+    token   VARCHAR(255)          NOT NULL,
+    type    INT                   NULL,
+    revoked BIT(1)                NOT NULL,
+    expired BIT(1)                NOT NULL,
+    user_id BIGINT                NULL,
+    CONSTRAINT pk_token PRIMARY KEY (id),
+    CONSTRAINT uc_token_token UNIQUE (token),
+    CONSTRAINT FK_TOKEN_ON_USER FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
 CREATE TABLE IF NOT EXISTS user_order
 (
     id           BIGINT AUTO_INCREMENT NOT NULL,
