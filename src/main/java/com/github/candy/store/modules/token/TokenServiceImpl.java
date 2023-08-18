@@ -21,4 +21,9 @@ public class TokenServiceImpl implements TokenService {
         );
         return tokenRepository.save(token);
     }
+
+    @Override
+    public void revoke(Token token) {
+        tokenRepository.revokeToken(token.getToken());
+    }
 }

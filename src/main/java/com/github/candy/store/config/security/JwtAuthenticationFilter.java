@@ -12,10 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.filter.RequestContextFilter;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,7 +22,7 @@ import java.util.Objects;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends RequestContextFilter {
 
     private final static String TOKEN_PREFIX = "Bearer ";
 
@@ -40,17 +39,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (Objects.nonNull(userEmail) && hasAuthentication()) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
                 var isTokenValid = tokenRepository.findByToken(jwt)
-                        .map(t -> !t.isExpired() && !t.isRevoked())
+                        .map(t -> {
+                            request.setAttribute("token", t);
+                            return !t.isRevoked();
+                        })
                         .orElse(false);
-                if (jwtTokenProvider.isTokenValid(jwt, userDetails) && isTokenValid) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-                    WebAuthenticationDetails webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
-                    authToken.setDetails(webAuthenticationDetails);
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (isTokenValid) {
+                    if (jwtTokenProvider.isTokenExpired(jwt)) {
+                        tokenRepository.revokeToken(jwt);
+                    } else {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+                        org.springframework.security.web.authentication.WebAuthenticationDetails webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
+                        authToken.setDetails(webAuthenticationDetails);
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
         }

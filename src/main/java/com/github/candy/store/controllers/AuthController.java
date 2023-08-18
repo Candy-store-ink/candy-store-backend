@@ -15,16 +15,19 @@ import com.github.candy.store.modules.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth/")
+@RequestMapping("/api/v1/")
 public class AuthController {
 
     private final TokenService tokenService;
@@ -33,7 +36,7 @@ public class AuthController {
     private final UserMapper userMapper;
     private final ManagerMapper managerMapper;
 
-    @PostMapping("login")
+    @PostMapping("auth/login")
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
         User user = this.userService.validateAuthentication(loginRequest);
         Token token = tokenService.generate(user);
@@ -46,5 +49,16 @@ public class AuthController {
         ManagerInfo managerInfo = managerMapper.toManagerInfo(manager);
         UserInfo userInfo = this.userMapper.toUserInfo(user, managerInfo);
         return tokenMapper.toTokenResponse(token, userInfo);
+    }
+
+    @DeleteMapping("logout")
+    public void logout() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return;
+        }
+        Token token = (Token) requestAttributes.getAttribute("token", RequestAttributes.SCOPE_REQUEST);
+        this.tokenService.revoke(token);
+        SecurityContextHolder.clearContext();
     }
 }

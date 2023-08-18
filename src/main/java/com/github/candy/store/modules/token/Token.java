@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -22,6 +23,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Table(name = "token")
+@NoArgsConstructor
 public class Token {
 
     @Id
@@ -36,10 +38,9 @@ public class Token {
 
     public boolean revoked;
 
-    public boolean expired;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     public Token(String token, TokenType type, User user) {

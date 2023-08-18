@@ -2,6 +2,7 @@ package com.github.candy.store.modules.user;
 
 import com.github.candy.store.modules.favoriteProducts.FavoriteProducts;
 import com.github.candy.store.modules.manager.Manager;
+import com.github.candy.store.modules.token.Token;
 import com.github.candy.store.modules.userOrder.UserOrder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,6 +22,9 @@ import java.util.List;
         @UniqueConstraint(columnNames = "email", name = "UK_ON_USER_EMAIL")
 })
 public class User implements UserDetails {
+
+    @Transient
+    private Token currentToken;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

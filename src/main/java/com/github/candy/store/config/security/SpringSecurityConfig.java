@@ -52,10 +52,6 @@ public class SpringSecurityConfig {
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .logout(logout -> logout
-                        .logoutUrl("/api/v1/auth/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             log.error("Unauthorized error for path: {} error: {}", request.getRequestURI(), authException.getMessage());
