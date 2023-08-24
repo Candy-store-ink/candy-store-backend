@@ -1,6 +1,6 @@
 package com.github.candy.store.modules.user;
 
-import com.github.candy.store.modules.favoriteProducts.FavoriteProducts;
+import com.github.candy.store.modules.product.FavoriteProducts;
 import com.github.candy.store.modules.manager.Manager;
 import com.github.candy.store.modules.token.Token;
 import com.github.candy.store.modules.userOrder.UserOrder;

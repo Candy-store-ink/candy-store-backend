@@ -1,7 +1,6 @@
 package com.github.candy.store.modules.product;
 
 import com.github.candy.store.modules.category.Category;
-import com.github.candy.store.modules.favoriteProducts.FavoriteProducts;
 import com.github.candy.store.modules.orderProducts.OrderProducts;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

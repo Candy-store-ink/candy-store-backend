@@ -16,11 +16,14 @@
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <flyway-mysql.version>9.16.0</flyway-mysql.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
         <jjwt.version>0.11.5</jjwt.version>
     </properties>
+
 
     <dependencies>
         <dependency>
@@ -109,6 +112,14 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>

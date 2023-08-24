@@ -1,4 +1,4 @@
-package com.github.candy.store.modules.favoriteProducts;
+package com.github.candy.store.modules.product;
 
 import com.github.candy.store.modules.product.Product;
 import com.github.candy.store.modules.user.User;
