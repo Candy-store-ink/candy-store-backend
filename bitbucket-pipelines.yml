@@ -8,7 +8,7 @@ pipelines:
           script:
             - mkdir dist
             - ls -la
-            - tar --exclude=dist/candy-store-${BITBUCKET_BUILD_NUMBER}-dev.tar.gz -czvf dist/candy-store-${BITBUCKET_BUILD_NUMBER}-dev.tar.gz .
+            - tar --exclude=dist/candy-store-${BITBUCKET_BUILD_NUMBER}.tar.gz -czvf dist/candy-store-${BITBUCKET_BUILD_NUMBER}.tar.gz .
             - ls -la dist/
           artifacts:
             - dist/**
