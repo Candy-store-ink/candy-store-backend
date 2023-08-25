@@ -25,8 +25,8 @@ pipelines:
             - apk update && apk add openssh rsync
             - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "sudo [ -d '/var/server/_temp' ] && echo 'Directory already exist.' || sudo mkdir -p /var/server/_temp"
             - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --rsync-path="sudo rsync" --delete upload/ ubuntu@13.43.88.161:/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker stop candy-store-api"
+            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker stop candy-store-api || true"
             - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "sudo mv '/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}' '/var/server/candy-store'"
             - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker build -t candy-store /var/server/candy-store"
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker run --name candy-store-api candy-store"
+            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker run --name candy-store-api candy-store || true"
             - ssh -o StrictHostKeyChecking=no ubuntu "echo 'Succesffully deployed'"
