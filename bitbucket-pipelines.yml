@@ -23,10 +23,9 @@ pipelines:
             - mkdir upload
             - tar -xf dist/candy-store-${BITBUCKET_BUILD_NUMBER}.tar.gz -C upload
             - apk update && apk add openssh rsync
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "sudo [ -d '/var/server/_temp' ] && echo 'Directory already exist.' || sudo mkdir -p /var/server/_temp"
-            - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --rsync-path="sudo rsync" --delete upload/ ubuntu@13.43.88.161:/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker stop candy-store-api || true"
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "sudo mv '/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}' '/var/server/candy-store'"
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker build -t candy-store /var/server/candy-store"
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "docker run --name candy-store-api candy-store || true"
-            - ssh -o StrictHostKeyChecking=no ubuntu@13.43.88.161 "echo 'Succesffully deployed'"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo [ -d '/var/server/_temp' ] && echo 'Directory already exist.' || sudo mkdir -p /var/server/_temp"
+            - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --rsync-path="sudo rsync" --delete upload/ ubuntu@52.56.177.82:/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo service candy-store stop"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo mv '/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}/*' '/var/server/candy-store'"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo service candy-store start"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "echo 'Succesffully deployed'"
