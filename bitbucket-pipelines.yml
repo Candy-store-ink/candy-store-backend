@@ -24,9 +24,11 @@ pipelines:
             - tar -xf dist/package-candy-store-${BITBUCKET_BUILD_NUMBER}.tar.gz -C upload
             - apk update && apk add openssh rsync
             - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo [ -d '/var/server/_temp' ] && echo 'Directory already exist.' || sudo mkdir -p /var/server/_temp"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82  "sudo [ -d '/var/server/_backup' ] && echo 'Directory already exist.' || sudo mkdir -p /var/server/_backup"
             - rsync -a  -e "ssh -o StrictHostKeyChecking=no" --rsync-path="sudo rsync" --delete upload/ ubuntu@52.56.177.82:/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}
             - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo service candy-store stop"
-            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo [ -d '/var/server/candy-store' ] && sudo rm -R /var/server/candy-store"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo [ -d '/var/server/_backup/candy-store' ] && sudo rm -R /var/server/_backup/candy-store || echo 'Directory not exist.'"
+            - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo mv '/var/server/candy-store' '/var/server/_backup/candy-store'"
             - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo mv '/var/server/_temp/candy-store-${BITBUCKET_BUILD_NUMBER}' '/var/server/candy-store'"
             - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "cd /var/server/candy-store/ && sudo mvn package -f pom.xml"
             - ssh -o StrictHostKeyChecking=no ubuntu@52.56.177.82 "sudo service candy-store start"
