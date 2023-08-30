@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,11 @@ public class CategoryController {
         Category category = this.categoryService.createCategory(request, image);
         CategoryResponse response = this.categoryMapper.toCategoryResponse(category);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("admin/category")
+    public void deleteCategory(@RequestParam long id) {
+        this.categoryService.deleteCategory(id);
     }
 
 }

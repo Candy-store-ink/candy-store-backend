@@ -37,4 +37,9 @@ public class CategoryServiceImpl implements CategoryService {
         category.setImage(link);
         return categoryRepository.save(category);
     }
+
+    @Override
+    public void deleteCategory(long id) {
+        this.categoryRepository.deleteById(id);
+    }
 }

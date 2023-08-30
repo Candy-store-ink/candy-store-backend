@@ -11,4 +11,6 @@ public interface CategoryService {
     Page<Category> getCategories(@Nullable String search, int page, int size);
 
     Category createCategory(CategoryRequest request, @Nullable MultipartFile image);
+
+    void deleteCategory(long id);
 }
