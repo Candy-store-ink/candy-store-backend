@@ -1,5 +1,8 @@
 package com.github.candy.store.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.candy.store.config.MultiPartFileFilter;
+import com.github.candy.store.exception.ErrorResponse;
 import com.github.candy.store.modules.user.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,6 +27,7 @@ public class SpringSecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final MultiPartFileFilter multiPartFileFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,9 +35,11 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(multiPartFileFilter, JwtAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/api/v1/auth/**",
+                                "/api/v1/image**",
                                 "/v2/api-docs",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
@@ -55,11 +60,7 @@ public class SpringSecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             log.error("Unauthorized error for path: {} error: {}", request.getRequestURI(), authException.getMessage());
-                            response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-                        })
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            log.error("Forbidden error for path: {} error: {}", request.getRequestURI(), accessDeniedException.getMessage());
-                            response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
+                            new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponse(HttpStatus.UNAUTHORIZED, authException.getMessage()));
                         })
                 );
         return http.build();

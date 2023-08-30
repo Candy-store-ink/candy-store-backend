@@ -8,6 +8,9 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     schemas: candy_store_db
+  servlet:
+    multipart:
+      max-file-size: 5MB
 logging:
   level:
     org.springframework.web: ERROR
@@ -21,6 +24,10 @@ app:
       secret: c1pyNHU3eCFBJUQqRy1LYVBkU2dWa1lwM3M2djl5JGYpSkBOY1JmVWpYbjJyNXU4eC9BP0QoRytLYlBlU2hWbQ==
       expiration: 2_678_400_000
       refresh-expiration: 5_443_200_000
+  image:
+    location: /var/server/images
+    path: /api/v1/image?id=
+  server-url: http://ec2-52-56-177-82.eu-west-2.compute.amazonaws.com
 server:
   port: 8080
 

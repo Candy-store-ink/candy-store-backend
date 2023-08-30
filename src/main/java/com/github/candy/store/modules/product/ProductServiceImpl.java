@@ -3,7 +3,7 @@ package com.github.candy.store.modules.product;
 import com.github.candy.store.modules.category.Category;
 import com.github.candy.store.modules.product.payload.ProductRequest;
 import com.github.candy.store.modules.user.User;
-import com.github.candy.store.utils.image.ImageHandler;
+import com.github.candy.store.utils.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final FavoriteProductsRepository favoriteProductsRepository;
-    private final ImageHandler imageHandler;
+    private final ImageService imageService;
 
     @Override
     public Page<Product> getProducts(Long categoryId, String search, int page, int size) {
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(request.name());
         product.setPrice(new BigDecimal(request.price()));
         product.setDescription(request.description());
-        String link = imageHandler.uploadImage(image);
+        String link = imageService.uploadImage(image);
         product.setImage(link);
         product.setCategory(category);
         return productRepository.save(product);

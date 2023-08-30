@@ -11,12 +11,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "category", uniqueConstraints = {
         @UniqueConstraint(columnNames = "name", name = "UK_ON_CATEGORY_NAME")
@@ -34,6 +36,7 @@ public class Category {
     @Column(name = "image")
     private String image;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
