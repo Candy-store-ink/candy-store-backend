@@ -42,4 +42,15 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(long id) {
         this.categoryRepository.deleteById(id);
     }
+
+    @Override
+    public Category updateCategory(long id, CategoryRequest request, MultipartFile image) {
+        Category category = getCategory(id);
+        category.setName(request.name());
+        if (image != null) {
+            String link = imageService.uploadImage(image);
+            category.setImage(link);
+        }
+        return categoryRepository.save(category);
+    }
 }

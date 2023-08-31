@@ -40,6 +40,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/api/v1/image**",
+                                "/api/v1/guest/**",
                                 "/v2/api-docs",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
@@ -60,7 +61,11 @@ public class SpringSecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             log.error("Unauthorized error for path: {} error: {}", request.getRequestURI(), authException.getMessage());
-                            new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponse(HttpStatus.UNAUTHORIZED, authException.getMessage()));
+                            ErrorResponse errorResponse = new ErrorResponse(
+                                    HttpStatus.valueOf(response.getStatus()),
+                                    authException.getMessage()
+                            );
+                            new ObjectMapper().writeValue(response.getOutputStream(), errorResponse);
                         })
                 );
         return http.build();

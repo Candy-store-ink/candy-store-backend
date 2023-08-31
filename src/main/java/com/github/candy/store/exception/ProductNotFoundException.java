@@ -2,17 +2,17 @@ package com.github.candy.store.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class UserNotFoundException extends BaseHttpException {
+public class ProductNotFoundException extends BaseHttpException {
 
-    public UserNotFoundException() {
-        super("User not found");
+    public ProductNotFoundException() {
+        super("Product not found");
     }
 
-    public UserNotFoundException(String message) {
+    public ProductNotFoundException(String message) {
         super(message);
     }
 
-    public UserNotFoundException(String message, HttpStatus httpStatus) {
+    public ProductNotFoundException(String message, HttpStatus httpStatus) {
         super(message, httpStatus);
     }
 
@@ -23,6 +23,6 @@ public class UserNotFoundException extends BaseHttpException {
 
     @Override
     protected String defaultMessage() {
-        return "User not found";
+        return "Product not found";
     }
 }

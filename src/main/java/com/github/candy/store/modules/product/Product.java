@@ -49,10 +49,10 @@ public class Product {
     private Date expirationDate;
 
     @Column(name = "is_visible")
-    private boolean isVisible;
+    private boolean visible;
 
     @Column(name = "is_removed")
-    private boolean isRemoved;
+    private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

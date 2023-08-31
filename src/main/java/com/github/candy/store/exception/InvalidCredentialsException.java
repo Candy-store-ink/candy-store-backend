@@ -2,11 +2,7 @@ package com.github.candy.store.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidCredentialsException  extends RuntimeException {
-
-    private final HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-
-    private String message = "Invalid credentials";
+public class InvalidCredentialsException extends BaseHttpException {
 
     public InvalidCredentialsException() {
         super("Invalid credentials");
@@ -14,15 +10,20 @@ public class InvalidCredentialsException  extends RuntimeException {
 
     public InvalidCredentialsException(String message) {
         super(message);
-        this.message = message;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    public InvalidCredentialsException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    protected HttpStatus defaultHttpStatus() {
+        return HttpStatus.BAD_REQUEST;
     }
+
+    @Override
+    protected String defaultMessage() {
+        return "Invalid credentials";
+    }
+
 }

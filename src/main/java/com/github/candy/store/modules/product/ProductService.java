@@ -15,4 +15,10 @@ public interface ProductService {
     boolean isFavorite(Product product, User user);
 
     Product createProduct(ProductRequest request, Category category, @Nullable MultipartFile image);
+
+    Product updateProduct(long id, ProductRequest request, Category category, MultipartFile image);
+
+    Product getById(long id);
+
+    void deleteProduct(long id);
 }

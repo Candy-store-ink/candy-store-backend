@@ -2,11 +2,7 @@ package com.github.candy.store.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class NotValidImageException extends RuntimeException {
-
-    private final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-    private String message = "Not valid image";
+public class NotValidImageException extends BaseHttpException {
 
     public NotValidImageException() {
         super("Not valid image");
@@ -14,15 +10,20 @@ public class NotValidImageException extends RuntimeException {
 
     public NotValidImageException(String message) {
         super(message);
-        this.message = message;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    public NotValidImageException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    protected HttpStatus defaultHttpStatus() {
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    @Override
+    protected String defaultMessage() {
+        return "Not valid image";
+
     }
 }

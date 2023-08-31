@@ -4,7 +4,7 @@ public record ProductRequest(
         String name,
         String description,
         Long categoryId,
-        String expiredDate,
+        Long expiredDate,
         String manufacturer,
         String price,
         boolean isVisible) {

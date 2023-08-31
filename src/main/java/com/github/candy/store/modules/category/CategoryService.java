@@ -13,4 +13,6 @@ public interface CategoryService {
     Category createCategory(CategoryRequest request, @Nullable MultipartFile image);
 
     void deleteCategory(long id);
+
+    Category updateCategory(long id, CategoryRequest request, MultipartFile image);
 }

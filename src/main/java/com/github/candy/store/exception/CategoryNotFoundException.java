@@ -2,11 +2,7 @@ package com.github.candy.store.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class CategoryNotFoundException extends RuntimeException {
-
-    private final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-
-    private String message = "Category not found";
+public class CategoryNotFoundException extends BaseHttpException {
 
     public CategoryNotFoundException() {
         super("Category not found");
@@ -14,15 +10,19 @@ public class CategoryNotFoundException extends RuntimeException {
 
     public CategoryNotFoundException(String message) {
         super(message);
-        this.message = message;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    public CategoryNotFoundException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    protected HttpStatus defaultHttpStatus() {
+        return HttpStatus.NOT_FOUND;
+    }
+
+    @Override
+    protected String defaultMessage() {
+        return "Category not found";
     }
 }
